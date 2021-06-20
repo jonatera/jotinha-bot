@@ -11,18 +11,10 @@ module.exports = {
     async run (client, msg, args) {
         const queue = client.distube.getQueue(msg);
         if (!queue) return;
-        if(queue.autoplay){
-            client.distube.toggleAutoplay('off');
-            msg.channel.send(new Discord.MessageEmbed(`Parando de adicionar músicas automaticamente.`)
+        client.distube.toggleAutoplay(msg);
+        msg.channel.send(new Discord.MessageEmbed("Modo autoplay está: `" + (mode ? "On" : "Off") + "` agora.")
                     .setDescription(``)
                     .setColor(def_color));
-        } 
-        else{
-            client.distube.toggleAutoplay('on');
-            msg.channel.send(new Discord.MessageEmbed()
-                    .setDescription(`Adicionando músicas automaticamente a partir de agora.`)
-                    .setColor(def_color));
-        }
-        
+         
     }
 }

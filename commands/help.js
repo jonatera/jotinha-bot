@@ -48,7 +48,7 @@ module.exports = {
                 embed[0].description = `Esse comando não existe!`;
                 return msg.channel.send({embed: embed[0]});
             }
-            embed[0].setTitle(`Comando \`${args.join(' ')}\``);
+            embed[0].setTitle(`Comando \`${command.name}\``);
             embed[0].addField(`*${command.description}*`,'\u200b');
 
             if (command.aliases) embed[0].addField('Alternativas: ', `__${command.aliases.join('__, __')}__`);

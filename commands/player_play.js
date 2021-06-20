@@ -2,8 +2,8 @@ const Discord = require('discord.js')
 
 module.exports = {
     name: "play",
-    description: "Toca uma musica ou video de um link :musical_note:",
-    aliases:['pr', 'ps'],
+    description: "Toca o primeiro resultado de um link :musical_note:",
+    aliases:['p'],
     usage: '[<link>]',
     example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     type: 'DJ',
@@ -19,8 +19,8 @@ module.exports = {
                     .setDescription(`${msg.author}, algo deu errado pra pesquisar isso...`)
                     .setColor(def_color));
         try{
-            client.distube.options.searchSongs = true;
-            client.distube.play(msg, search)
+            client.distube.options.searchSongs = false;
+            client.distube.play(msg, search);
         }
         catch(error){
             return msg.channel.send(new Discord.MessageEmbed()
