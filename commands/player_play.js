@@ -19,7 +19,7 @@ module.exports = {
                     .setDescription(`${msg.author}, algo deu errado pra pesquisar isso...`)
                     .setColor(def_color));
         try{
-            client.distube.options.searchSongs = false;
+            //client.distube.options.searchSongs = false;
             client.distube.play(msg, search);
         }
         catch(error){
