@@ -5,7 +5,9 @@ const Discord = require('discord.js')
 const client = new Discord.Client({
      partials: ['MESSAGE']
 });
-const distube = new DisTube(client, { searchSongs: true, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true, plugins: [new SpotifyPlugin({ parallel: true })]);
+const distube = new DisTube(client, { 
+						searchSongs: true, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true, plugins: [new SpotifyPlugin({ parallel: true })] 
+					});
 
 /* bot
 	login
