@@ -11,7 +11,7 @@ module.exports = {
     async run (client, msg, args) {
         const queue = client.distube.getQueue(msg);
         if (!queue) return;
-        client.distube.toggleAutoplay(msg);
+        let mode = client.distube.toggleAutoplay(msg);
         msg.channel.send(new Discord.MessageEmbed("Modo autoplay está: `" + (mode ? "On" : "Off") + "` agora.")
                     .setDescription(``)
                     .setColor(def_color));
