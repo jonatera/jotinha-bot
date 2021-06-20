@@ -1,13 +1,15 @@
 require('dotenv').config()
 const DisTube = require('distube');
-const SpotifyPlugin = require("@distube/spotify")
+const SoundCloudPlugin = require("@distube/soundcloud");
+const SpotifyPlugin = require("@distube/spotify");
 const Discord = require('discord.js')
 const client = new Discord.Client({
      partials: ['MESSAGE']
 });
-const distube = new DisTube(client, { 
-						searchSongs: true, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true, plugins: [new SpotifyPlugin({ parallel: true })] 
-					});
+const distube = new DisTube.default(client, { 
+						searchSongs: 10, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true,
+						plugins: [new SpotifyPlugin({ parallel: true })]
+					}); //plugins: [new SoundCloudPlugin()]
 
 /* bot
 	login
