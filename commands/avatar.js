@@ -4,6 +4,7 @@ module.exports = {
     name: "avatar",
     description: "Mostra os avatares maravilhosos das pessoas :heart:",
     usage: '[<membro>]',
+    type: 'Utilidades',
 
     async run (client, msg, args) {
         let member = msg.mentions.users.first() || msg.author

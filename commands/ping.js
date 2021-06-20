@@ -3,6 +3,7 @@ const Discord = require('discord.js')
 module.exports = {
     name: "ping",
     description: "Testar o bot e latencia.",
+    type: 'Bot',
     args: false,
 
     async run (client, msg, args) {

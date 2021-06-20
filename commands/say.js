@@ -6,6 +6,7 @@ module.exports = {
     aliases: ['s'],
     usage: '[texto]',
     example: 'Leeroy Jeenkins',
+    type: 'Utilidades',
     args: true,
 
     async run (client, msg, args) {

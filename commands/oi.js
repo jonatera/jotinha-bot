@@ -4,6 +4,7 @@ module.exports = {
     name: "oi",
     description: "Dê oi pro jotinha! :smiley: :smiley:",
     aliases: ['cumprimentar', 'ola'],
+    type: 'Utilidades',
     args: false,
 
     async run (client, msg, args) {

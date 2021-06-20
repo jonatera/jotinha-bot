@@ -6,6 +6,7 @@ module.exports = {
     aliases: ['8ball', 'pergunta'],
     usage: '[pergunta]',
     example: 'no céu tem pão?',
+    type: 'Utilidades',
     args: true,
 
     async run (client, msg, args) {

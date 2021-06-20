@@ -7,12 +7,13 @@ module.exports = {
     aliases:['d', 'rolls', 'r'],
     usage: '[<dados>d<quantidade> +/- <número>]',
     example: '2d20 + d8 - 4',
-    args: true,
+    type: 'Utilidades',
 
     async run (client, msg, args) {
         try{
             const dice = new DiceRoller.DiceRoller();
-            let roll = dice.roll(args.join(' '));
+            if(!args.length) args[0] = 'd20';
+            let roll = dice.roll(args.join(' ').toLowerCase());    
             let embed = new Discord.MessageEmbed();
                 embed.setColor(def_color);
                 embed.setTitle(`:game_die: Rolando dados :game_die:`)

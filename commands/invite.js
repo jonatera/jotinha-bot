@@ -3,6 +3,7 @@ const Discord = require('discord.js');
 module.exports = {
     name: "invite",
     description: "Envia o convite do Jotinhabot pro seu servidor :sunglasses:",
+    type: 'Bot',
     args:false,
 
     async run (client, msg, args) {
