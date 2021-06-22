@@ -25,6 +25,7 @@ module.exports = {
             msg.channel.send(new Discord.MessageEmbed()
                     .setDescription(`Uso: \`${this.usage}\`\nExemplo: \`${this.example}\``)
                     .setColor(def_color));
+
         }
     }
 }

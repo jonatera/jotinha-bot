@@ -10,13 +10,13 @@ module.exports = {
     async run (client, msg, args) {
         const queue = client.distube.getQueue(msg);
         if (!queue) return;
-        if(queue.pause){
-            client.distube.resume(msg);
+        if(queue.paused){
+            queue.resume(msg);
             msg.channel.send(new Discord.MessageEmbed()
                     .setDescription(`Tocando de novo :arrow_forward:`)
                     .setColor(def_color));
         }
-        client.distube.pause(msg);
+        queue.pause(msg);
         msg.channel.send(new Discord.MessageEmbed()
                     .setDescription(`Interrompendo a música :pause_button:`)
                     .setColor(def_color));

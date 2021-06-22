@@ -16,20 +16,20 @@ module.exports = {
             for(const element of commands.map(command => command.name)){
                 const command = commands.find(cmd => cmd.name.includes(element));
 
-                if(embed[command.type] === undefined){
-                    embed[command.type] = new Discord.MessageEmbed();
-                    embed[command.type].setColor(def_color);
-                    embed[command.type].setTitle('Comandos do Jotinha!');
-                    embed[command.type].setDescription(`Digite \`${prefix}[comando]\` para usá-lo. Você pode digitar \`${prefix}help [comando]\` para procurar ajuda sobre um comando específico.`);
-                    embed[command.type].addField('\u200b',`**Comandos de \`${command.type}\`:**`);
+                if(embed[command.type.toLowerCase()] === undefined){
+                    embed[command.type.toLowerCase()] = new Discord.MessageEmbed();
+                    embed[command.type.toLowerCase()].setColor(def_color);
+                    embed[command.type.toLowerCase()].setTitle('Comandos do Jotinha!');
+                    embed[command.type.toLowerCase()].setDescription(`Digite \`${prefix}[comando]\` para usá-lo. Você pode digitar \`${prefix}help [comando]\` para procurar ajuda sobre um comando específico.`);
+                    embed[command.type.toLowerCase()].addField('\u200b',`**Comandos de \`${command.type}\`:**`);
                 }
 
-                embed[command.type].addField(`\`${element}\``,`*${command.description}*`,true);
+                embed[command.type.toLowerCase()].addField(`\`${element}\``,`*${command.description}*`,true);
             }
 
             let entries = Object.keys(embed);
 
-        if (!args.length || entries.includes(args[0])) {
+        if (!args.length || entries.includes(args[0].toLowerCase())) {
             
             let dummy = [];
             let page;

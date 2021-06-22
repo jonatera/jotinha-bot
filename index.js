@@ -95,7 +95,8 @@
 			    queue.autoplay = true;
 			    queue.volume = 100;
 			})
-		    .on("playSong", (queue, song) => queue.textChannel.send(new Discord.MessageEmbed()
+		    .on("playSong", async (queue, song) => {
+		    		    const curPage = await queue.textChannel.send(new Discord.MessageEmbed()
 		    		   .setTitle(`Agora tocando: :musical_note:`)
 		    		   .setImage(song.thumbnail)
 			        .setDescription(`[${song.name}](${song.url}) - \`${song.formattedDuration}\``)
@@ -106,10 +107,48 @@
 			        )
 			        .setFooter(`Digite ${prefix}help DJ para ver os comandos de música.`)
 			        .setColor(def_color)
-		        
-		    ))
+
+		    		   )
+
+				     let emojiList = ['⏪', '⏯️', '⏩'];
+					for (const emoji of emojiList) await curPage.react(emoji);
+					const reactionCollector = curPage.createReactionCollector(
+						(reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
+						{ time: 30000 }
+					);
+					reactionCollector.on('collect', reaction => {
+						switch (reaction.emoji.name) {
+							case emojiList[0]:
+								try{
+									distube.previous(queue);
+									reactionCollector.stop();
+								}
+								catch(error){};
+								break;
+							case emojiList[1]:
+							
+								reaction.users.remove(queue.textChannel.client.user);
+								if(queue.paused) queue.resume(queue);
+						        	else queue.pause(queue);
+								break;
+							case emojiList[2]:
+								distube.skip(queue);
+								reactionCollector.stop() ;
+								break;
+							default:
+								break;
+						}
+						
+					});
+					reactionCollector.on('end', () => {
+						if (!curPage.deleted) {
+							curPage.reactions.removeAll();
+						}
+					});
+					return curPage;   
+		    })
 		    .on("addSong", (queue, song) => queue.textChannel.send(new Discord.MessageEmbed()
-			        .addFields({ name: `:white_check_mark: | ${song.user} colocou ${song.name} - \`${song.formattedDuration}\` na fila.`, value: `\`${queue.songs.length}\` faixas na fila, \`${formattedDuration}\` total.`})
+			        .addFields({ name: `:white_check_mark: | ${song.user} colocou ${song.name}\`[${song.formattedDuration}]\` na fila.`, value: `\`${queue.songs.length}\` faixas na fila, \`${queue.formattedDuration}\` total.`})
 			        .setColor(def_color)
 		    ))
 		    .on("addList", (queue, playlist) => queue.textChannel.send(new Discord.MessageEmbed()
