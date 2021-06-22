@@ -1,4 +1,4 @@
-const pagination = require('discord.js-pagination');
+const pagination = require('../pagination.js')
 const Discord = require('discord.js')
 
 module.exports = {
@@ -13,7 +13,6 @@ module.exports = {
         const { commands } = client;
         let embed = [];
 
-        if (!args.length) {
             for(const element of commands.map(command => command.name)){
                 const command = commands.find(cmd => cmd.name.includes(element));
 
@@ -28,17 +27,21 @@ module.exports = {
                 embed[command.type].addField(`\`${element}\``,`*${command.description}*`,true);
             }
 
-            let dummy = [];
             let entries = Object.keys(embed);
 
+        if (!args.length || entries.includes(args[0])) {
+            
+            let dummy = [];
+            let page;
             for (let i = 0; i < Object.keys(embed).length; i++) {
+                if(args[0] === entries[i]) page = i;
                 dummy[i] = embed[entries[i]];
             }
             
             const emojiList = ["⏪", "⏩"];
             const timeout = '120000';
 
-            pagination(msg, dummy, emojiList, timeout);          
+            pagination(msg, dummy, emojiList, timeout, page);          
         }
         else {
             embed[0] = new Discord.MessageEmbed();

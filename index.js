@@ -1,22 +1,28 @@
-require('dotenv').config()
-const DisTube = require('distube');
-const SoundCloudPlugin = require("@distube/soundcloud");
-const SpotifyPlugin = require("@distube/spotify");
-const Discord = require('discord.js')
-const client = new Discord.Client({
-     partials: ['MESSAGE']
-});
-const distube = new DisTube(client, { 
-						searchSongs: 5, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true,
-						plugins: [new SpotifyPlugin({ parallel: true })]
-					}); //plugins: [new SoundCloudPlugin()]
-
+/* dependencies
+			*/
+	require('dotenv').config()
+	const DisTube = require('distube');
+	const SoundCloudPlugin = require("@distube/soundcloud");
+	const SpotifyPlugin = require("@distube/spotify");
+	const Discord = require('discord.js');
+	
+/* environment
+		objects
+			*/
+	const client = new Discord.Client({
+	     partials: ['MESSAGE']
+	});
+	const distube = new DisTube(client, { 
+							searchSongs: 5, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10,
+							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
+						});
+	 
 /* bot
 	login
-		*/
-	prefix = 'j.'; 
+		*/ 
+	prefix = process.env.default_prefix; 
 	def_color = "add8e6";
-	client.login(process.env.BOT_TOKEN)
+	client.login(process.env.BOT_TOKEN);
 	client.on("error", console.error);
 	client.on("ready", () => {
 		console.log("Alo alo meu patrão bora trabaia");
@@ -47,8 +53,10 @@ const distube = new DisTube(client, {
 			const prefixRegex = new RegExp(`^(<@!?${client.user.id}>|${escapeRegex(prefix)})\\s*`, 'i');
 
 		     if(prefixRegex.test(msg.content)){
+		        const [, matchedPrefix] = msg.content.match(prefixRegex);
 
-		        const args = msg.content.slice(prefix.length).trim().split(/ +/g);
+
+		        const args = msg.content.slice(matchedPrefix.length).trim().split(/ +/g);
 
 		        const commandName = args.shift().toLowerCase();
 		        const command = client.commands.get(commandName) || client.commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
@@ -83,7 +91,11 @@ const distube = new DisTube(client, {
 
 		client.distube = distube;
 		distube
-		    .on("playSong", (msg, queue, song) => msg.channel.send(new Discord.MessageEmbed()
+			.on("initQueue", queue => {
+			    queue.autoplay = true;
+			    queue.volume = 100;
+			})
+		    .on("playSong", (queue, song) => queue.textChannel.send(new Discord.MessageEmbed()
 		    		   .setTitle(`Agora tocando: :musical_note:`)
 		    		   .setImage(song.thumbnail)
 			        .setDescription(`[${song.name}](${song.url}) - \`${song.formattedDuration}\``)
@@ -92,30 +104,17 @@ const distube = new DisTube(client, {
 			        	{ name: `:thumbsup: *${song.likes.toLocaleString()}*`, value: `:thumbsdown: *${song.dislikes.toLocaleString()}*`, inline: true },
 			        	{ name: `Parâmetros: `, value: `${status(queue)}` },
 			        )
-			        .setFooter(`Digite ${prefix}stop para parar o bot, ${prefix}skip para pular essa música.`)
+			        .setFooter(`Digite ${prefix}help DJ para ver os comandos de música.`)
 			        .setColor(def_color)
 		        
 		    ))
-		    .on("addSong", (msg, queue, song) => msg.channel.send(new Discord.MessageEmbed()
-			        .setDescription(`:white_check_mark: | ${song.user} colocou ${song.name} - \`${song.formattedDuration}\` na fila.`)
+		    .on("addSong", (queue, song) => queue.textChannel.send(new Discord.MessageEmbed()
+			        .addFields({ name: `:white_check_mark: | ${song.user} colocou ${song.name} - \`${song.formattedDuration}\` na fila.`, value: `\`${queue.songs.length}\` faixas na fila, \`${formattedDuration}\` total.`})
 			        .setColor(def_color)
 		    ))
-		    .on("playList", (msg, queue, playlist, song) => msg.channel.send(new Discord.MessageEmbed()
+		    .on("addList", (queue, playlist) => queue.textChannel.send(new Discord.MessageEmbed()
 		    		   .setTitle(`Playlist adicionada!: :musical_note::musical_note:`)
-		    		   .setImage(song.thumbnail)
-			        .setDescription(`Playlist [${playlist.name}](${playlist.url}) (${playlist.total_items} faixas)\n[${song.name}](${song.url}) - \`${song.formattedDuration}\``)
-			        .addFields( 
-			        	{ name: `:movie_camera: *${song.views.toLocaleString()}*`, value: `Adicionado por: ${song.user}`, inline: true },
-			        	{ name: `:thumbsup: *${song.likes.toLocaleString()}*`, value: `:thumbsdown: *${song.dislikes.toLocaleString()}*`, inline: true },
-			        	{ name: `Parâmetros: `, value: `${status(queue)}` },
-			        )
-			        .setFooter(`Digite ${prefix}stop para parar o bot, ${prefix}skip para pular essa música.`)
-			        .setColor(def_color)
-
-		    ))
-		    .on("addList", (msg, queue, playlist) => msg.channel.send(new Discord.MessageEmbed()
-		    		   .setTitle(`Playlist adicionada!: :musical_note::musical_note:`)
-			        .setDescription(`Playlist [${playlist.name}](${playlist.url}) (${playlist.total_items} faixas)`)
+			        .setDescription(`Playlist [${playlist.name}](${playlist.url}) (${playlist.songs.length} faixas)`)
 			        .setColor(def_color)
 		        
 		    ))
@@ -130,9 +129,9 @@ const distube = new DisTube(client, {
 		    .on("searchCancel", msg => msg.channel.send(new Discord.MessageEmbed()
 			        .setDescription(`Procura cancelada.`)
 			        .setColor(def_color)))
-		    .on("finish", msg => msg.channel.send(new Discord.MessageEmbed()
+		    .on("finish", queue => queue.textChannel.send(new Discord.MessageEmbed()
 			        .setDescription(`Acabaram as músicas da fila.`)
 			        .setColor(def_color)
 		    	))
-		    .on("error", (msg, err) => console.log(''))
+		    .on("error", (msg, err) => console.log(err))
 
