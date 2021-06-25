@@ -13,7 +13,7 @@
 	const client = new Discord.Client({
 	     partials: ['MESSAGE']
 	});
-	const distube = new DisTube(client, { 
+	const distube = new DisTube.default(client, { 
 							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});

@@ -9,7 +9,8 @@ module.exports = {
     args: false,
 
     async run (client, msg, args) {
-        /*const queue = client.distube.getQueue(msg);
+        const queue = client.distube.getQueue(msg);
+        /*
         if (!queue) return;
         let mode = client.distube.toggleAutoplay(msg);
         msg.channel.send(new Discord.MessageEmbed()
@@ -18,6 +19,7 @@ module.exports = {
                     msg.channel.send(new Discord.MessageEmbed()
                     .setDescription("No momento indisponível.")
                     .setColor(def_color));
+
          
     }
 }
