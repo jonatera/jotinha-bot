@@ -5,6 +5,7 @@
 	const SoundCloudPlugin = require("@distube/soundcloud");
 	const SpotifyPlugin = require("@distube/spotify");
 	const Discord = require('discord.js');
+	const ytdl = require('ytdl-core');
 	
 /* environment
 		objects
@@ -13,7 +14,7 @@
 	     partials: ['MESSAGE']
 	});
 	const distube = new DisTube(client, { 
-							searchSongs: 5, emitNewSongOnly: true, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10,
+							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});
 	 
@@ -77,7 +78,7 @@
                   	}
 
 		        try {
-		            command.run(client, msg, args);
+		            command.run(client, msg, args); 
 
 		        } catch (error){
 		            console.error(error);
@@ -87,7 +88,7 @@
 
 		})
 
-		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``
+		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\``
 
 		client.distube = distube;
 		distube
@@ -102,19 +103,19 @@
 			        .setDescription(`[${song.name}](${song.url}) - \`${song.formattedDuration}\``)
 			        .addFields( 
 			        	{ name: `:movie_camera: *${song.views.toLocaleString()}*`, value: `Adicionado por: ${song.user}`, inline: true },
-			        	{ name: `:thumbsup: *${song.likes.toLocaleString()}*`, value: `:thumbsdown: *${song.dislikes.toLocaleString()}*`, inline: true },
+			        	{ name: song.likes > 0 ? `:thumbsup: *${song.likes.toLocaleString()}*` : '\u200b', value: song.dislikes > 0 ? `:thumbsdown: *${song.dislikes.toLocaleString()}*`: '\u200b', inline: true },
 			        	{ name: `Parâmetros: `, value: `${status(queue)}` },
 			        )
 			        .setFooter(`Digite ${prefix}help DJ para ver os comandos de música.`)
 			        .setColor(def_color)
 
 		    		   )
-
+		    		    
 				     let emojiList = ['⏪', '⏯️', '⏩'];
 					for (const emoji of emojiList) await curPage.react(emoji);
 					const reactionCollector = curPage.createReactionCollector(
 						(reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
-						{ time: 30000 }
+						{ time: song.duration*1000 }
 					);
 					reactionCollector.on('collect', reaction => {
 						switch (reaction.emoji.name) {
@@ -127,7 +128,6 @@
 								break;
 							case emojiList[1]:
 							
-								reaction.users.remove(queue.textChannel.client.user);
 								if(queue.paused) queue.resume(queue);
 						        	else queue.pause(queue);
 								break;
@@ -146,9 +146,10 @@
 						}
 					});
 					return curPage;   
+
 		    })
 		    .on("addSong", (queue, song) => queue.textChannel.send(new Discord.MessageEmbed()
-			        .addFields({ name: `:white_check_mark: | ${song.user} colocou ${song.name}\`[${song.formattedDuration}]\` na fila.`, value: `\`${queue.songs.length}\` faixas na fila, \`${queue.formattedDuration}\` total.`})
+			        .addFields({ name: `:white_check_mark: | ${song.name}\`[${song.formattedDuration}]\` agora está na fila.`, value: `Adicionado por: ${song.user}.\n\`${queue.songs.length}\` faixas na fila, \`${queue.formattedDuration}\` total.`})
 			        .setColor(def_color)
 		    ))
 		    .on("addList", (queue, playlist) => queue.textChannel.send(new Discord.MessageEmbed()

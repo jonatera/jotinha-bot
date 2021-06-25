@@ -4,7 +4,7 @@ module.exports = {
     name: "skip",
     description: "Pula para a próxima música.",
     type: 'DJ',
-    aliases:['sk'],
+    aliases:['sk', 'next'],
     inVoiceChannel: true,
     args: false,
 
@@ -14,7 +14,7 @@ module.exports = {
         try {
             client.distube.skip(msg)
         } catch (error) {
-            message.channel.send(`${error}`)
+            msg.channel.send(`${error}`)
         }
     }
 }
