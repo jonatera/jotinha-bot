@@ -14,7 +14,7 @@
 	     partials: ['MESSAGE']
 	});
 	const distube = new DisTube.default(client, { 
-							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10,
+							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});
 	 
@@ -88,7 +88,7 @@
 
 		})
 
-		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\``
+		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``
 
 		client.distube = distube;
 		distube

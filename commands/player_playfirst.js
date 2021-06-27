@@ -1,11 +1,11 @@
 const Discord = require('discord.js')
 
 module.exports = {
-    name: "plays",
-    description: "Procura e toca uma música ou link :musical_note:",
-    aliases:['ps', 'pq'],
+    name: "playfirst",
+    description: "Coloca o primeiro resultado de um link como prioridade na fila :musical_note:",
+    aliases:['pf', 'pfirst', 'first'],
     usage: '[<link>]',
-    example: 'Bilada Circulation',
+    example: 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
     type: 'DJ',
     inVoiceChannel: true,
     args: true,
@@ -19,8 +19,8 @@ module.exports = {
                     .setDescription(`${msg.author}, algo deu errado pra pesquisar isso...`)
                     .setColor(def_color));
         try{
-            client.distube.options.searchSongs = 5;
-            client.distube.play(msg, search)
+            client.distube.options.searchSongs = 0;
+            client.distube.play(msg, search, { unshift:true });
         }
         catch(error){
             return msg.channel.send(new Discord.MessageEmbed()

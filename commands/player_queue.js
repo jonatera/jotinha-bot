@@ -22,7 +22,7 @@ module.exports = {
                     embed[index].setTitle(`Fila de músicas :musical_note:`);
                     embed[index].addField(`Músicas`,`${queue.songs.length}`, true);
                     embed[index].addField(`Duração total`,`${queue.formattedDuration}`, true);
-                    embed[index].addField(`\u200b`, `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\``);
+                    embed[index].addField(`\u200b`, `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``);
             }
             let string = ``;
             if(!(embed[index].description === null)) string = embed[index].description;

@@ -11,14 +11,26 @@ module.exports = {
         const queue = client.distube.getQueue(msg);
         if (!queue) return;
         if(queue.paused){
-            queue.resume(msg);
-            msg.channel.send(new Discord.MessageEmbed()
-                    .setDescription(`Tocando de novo :arrow_forward:`)
-                    .setColor(def_color));
+            try{
+                queue.resume(msg);
+                msg.channel.send(new Discord.MessageEmbed()
+                        .setDescription(`Tocando de novo :arrow_forward:`)
+                        .setColor(def_color));
+            }
+            catch(error){
+
+            }
+            
         }
-        queue.pause(msg);
+        try{
+            queue.pause(msg);
         msg.channel.send(new Discord.MessageEmbed()
                     .setDescription(`Interrompendo a música :pause_button:`)
                     .setColor(def_color));
+        }
+        catch(error){
+
+        }
+        
     }
 }
