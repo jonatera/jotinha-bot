@@ -1,11 +1,13 @@
 /* dependencies
 			*/
 	require('dotenv').config()
+	const db = require('quick.db');
 	const DisTube = require('distube');
 	const SoundCloudPlugin = require("@distube/soundcloud");
 	const SpotifyPlugin = require("@distube/spotify");
 	const Discord = require('discord.js');
 	const ytdl = require('ytdl-core');
+
 	
 /* environment
 		objects
@@ -115,7 +117,7 @@
 					for (const emoji of emojiList) await curPage.react(emoji);
 					const reactionCollector = curPage.createReactionCollector(
 						(reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
-						{ time: song.duration*1000 }
+						{ time: song.duration*1010 }
 					);
 					reactionCollector.on('collect', reaction => {
 						switch (reaction.emoji.name) {

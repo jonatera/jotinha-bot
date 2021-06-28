@@ -1,5 +1,5 @@
-const pagination = require('../pagination.js')
-const Discord = require('discord.js')
+const pagination = require('../pagination.js');
+const Discord = require('discord.js');
 
 module.exports = {
     name: "help",
@@ -14,7 +14,7 @@ module.exports = {
         let embed = [];
 
             for(const element of commands.map(command => command.name)){
-                const command = commands.find(cmd => cmd.name.includes(element));
+                const command = commands.get(element);
 
                 if(embed[command.type.toLowerCase()] === undefined){
                     embed[command.type.toLowerCase()] = new Discord.MessageEmbed();
@@ -34,7 +34,7 @@ module.exports = {
             let dummy = [];
             let page;
             for (let i = 0; i < Object.keys(embed).length; i++) {
-                if(args[0] === entries[i]) page = i;
+                if(args.length) if(args[0].toLowerCase() === entries[i]) page = i;
                 dummy[i] = embed[entries[i]];
             }
             

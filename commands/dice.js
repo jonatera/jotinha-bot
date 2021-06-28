@@ -7,7 +7,7 @@ module.exports = {
     aliases:['d', 'rolls', 'r'],
     usage: '[<dados>d<quantidade> +/- <número>]',
     example: '2d20 + d8 - 4',
-    type: 'Utilidades',
+    type: 'Games',
 
     async run (client, msg, args) {
         try{
