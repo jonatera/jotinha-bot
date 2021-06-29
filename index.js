@@ -6,7 +6,6 @@
 	const SoundCloudPlugin = require("@distube/soundcloud");
 	const SpotifyPlugin = require("@distube/spotify");
 	const Discord = require('discord.js');
-	const ytdl = require('ytdl-core');
 
 	
 /* environment
@@ -16,7 +15,7 @@
 	     partials: ['MESSAGE']
 	});
 	const distube = new DisTube.default(client, { 
-							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false,
+							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false, youtubeDL:false,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});
 	 
