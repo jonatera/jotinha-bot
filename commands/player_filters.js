@@ -3,24 +3,40 @@ const Discord = require('discord.js')
 module.exports = {
     name: "filter",
     description: "Adiciona filtros na música.",
-    aliases:['filters'],
-    usage: '[<filters>]',
-    example: '3d, bassboost, echo, karaoke, nightcore, vaporwave, flanger, gate, haas, reverse, surround, mcompand, phaser, tremolo, earwax',
+    aliases:['filters', 'filtro', 'filtros'],
+    usage: '[<filtro1> <filtro2> <...>]',
+    example: 'off 3d bassboost echo karaoke nightcore vaporwave flanger gate haas reverse surround mcompand phaser tremolo earwax',
     type: 'DJ',
     inVoiceChannel: true,
-    args: true,
 
     async run (client, msg, args) {
         const queue = client.distube.getQueue(msg)
         if (!queue) return;
-        if (args[0] === "off" && queue.filter) client.distube.setFilter(msg, queue.filter)
-        else if (Object.keys(client.distube.filters).includes(args[0])) client.distube.setFilter(msg, args[0])
-        else if (args[0]) return msg.channel.send(new Discord.MessageEmbed()
-                    .setDescription(`Esse filtro não existe!`)
+        if(args.length){
+            const filter = args.map(x => x.toLowerCase());
+            console.log(filter)
+
+            if (filter.toString() === "off" && queue.filters.length){
+                queue.setFilter(false)
+                msg.channel.send(new Discord.MessageEmbed()
+                        .setDescription(`Desligando todos os filtros.`)
+                        .setColor(def_color));
+            } 
+            else{
+                try{
+                    for (let i = 0; i < filter.length; i++) queue.setFilter(filter[i]);
+                    msg.channel.send(new Discord.MessageEmbed()
+                        .setDescription(`Filtro atual: \`${queue.filters.length ? queue.filters : "Off"}\``)
+                        .setColor(def_color));
+                } 
+                catch(err){
+                }
+            }
+        }
+        else return msg.channel.send(new Discord.MessageEmbed()
+                    .setDescription(`Filtro atual: \`${queue.filters.length ? queue.filters : "Off"}\``)
                     .setColor(def_color));
-        msg.channel.send(new Discord.MessageEmbed()
-                    .setDescription(`Filtro atual: \`${queue.filter || "Off"}\``)
-                    .setColor(def_color));
+        
 
     }
 }

@@ -15,7 +15,7 @@
 	     partials: ['MESSAGE']
 	});
 	const distube = new DisTube.default(client, { 
-							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false, youtubeDL:false,
+							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false, emitNewSongOnly:true,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});
 	 
@@ -89,7 +89,7 @@
 
 		})
 
-		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filter || "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Essa música" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``
+		const status = queue => `Volume: \`${queue.volume}%\` | Filtro: \`${queue.filters.length ? "On" : "Off"}\` | Loop: \`${queue.repeatMode ? queue.repeatMode === 2 ? "Toda a fila" : "Música atual" : "Off"}\` | Autoplay: \`${queue.autoplay ? "On" : "Off"}\``
 
 		client.distube = distube;
 		distube
@@ -112,7 +112,7 @@
 
 		    		   )
 		    		    
-				     let emojiList = ['⏪', '⏯️', '⏩'];
+				     let emojiList = ['⏪', '⏯️', '⏩', '🔁'];
 					for (const emoji of emojiList) await curPage.react(emoji);
 					const reactionCollector = curPage.createReactionCollector(
 						(reaction, user) => emojiList.includes(reaction.emoji.name) && !user.bot,
@@ -136,6 +136,9 @@
 								distube.skip(queue);
 								reactionCollector.stop() ;
 								break;
+							case emojiList[3]:
+								distube.seek(queue,0);
+								break
 							default:
 								break;
 						}

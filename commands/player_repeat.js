@@ -8,13 +8,16 @@ module.exports = {
     usage: '[off, song, queue]',
     example: 'queue',
     inVoiceChannel: true,
-    args: true,
 
     async run (client, msg, args) {
         const queue = client.distube.getQueue(msg);
         if (!queue) return;
         let mode = null;
-        switch (args[0]) {
+        if(!args.length){
+            client.distube.seek(queue,0);
+        }
+        else{
+            switch (args[0]) {
             case "off":
                 mode = 0
                 break
@@ -30,5 +33,7 @@ module.exports = {
         msg.channel.send(new Discord.MessageEmbed()
                     .setDescription(`:white_check_mark: Agora o modo de repetição está em: \`${mode}\``)
                     .setColor(def_color));
+        }
+        
     }
 }
