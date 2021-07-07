@@ -21,7 +21,7 @@
     "fs": "0.0.1-security",
     "i": "^0.3.6",
     "libsodium-wrappers": "^0.7.9",
-    "nodemon": "^2.0.7",
+    "nodemon": "^2.0.9",
     "npm": "^7.19.0",
     "path": "^0.12.7",
     "quick.db": "^7.1.3",

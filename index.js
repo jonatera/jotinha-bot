@@ -15,7 +15,7 @@
 	     partials: ['MESSAGE']
 	});
 	const distube = new DisTube.default(client, { 
-							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, updateYouTubeDL:false, emitNewSongOnly:true,
+							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, youtubeDL:false, updateYouTubeDL:false, emitNewSongOnly:true,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]
 						});
 	 
