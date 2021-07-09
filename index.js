@@ -14,6 +14,7 @@
 	const client = new Discord.Client({
 	     partials: ['MESSAGE']
 	});
+	const cookie = process.env.COOKIE;
 	const distube = new DisTube.default(client, { 
 							searchSongs: 5, leaveOnFinish: false, leaveOnEmpty: true, nsfw: true, searchCooldown: 10, emitNewSongOnly:true,
 							plugins: [new SpotifyPlugin({ parallel: true }, new SoundCloudPlugin())]

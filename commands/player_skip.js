@@ -12,7 +12,7 @@ module.exports = {
         const queue = client.distube.getQueue(msg)
         if (!queue) return;
         try {
-            client.distube.skip(msg) 
+            queue.skip();
         } catch (error) {
             msg.channel.send(`${error}`)
         }
